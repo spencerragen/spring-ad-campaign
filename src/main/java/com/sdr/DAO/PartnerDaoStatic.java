@@ -8,8 +8,6 @@ import com.sdr.Exception.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Repository
@@ -69,7 +67,6 @@ public class PartnerDaoStatic implements PartnerDaoInterface {
     @Override
     public Campaign getActiveCampaign(String partnerId) throws NoSuchPartnerException, NoActiveCampaignException {
         Partner p = this.getPartner(partnerId);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
         for (Campaign c : p.getCampaigns()) {
             Calendar now = Calendar.getInstance();
