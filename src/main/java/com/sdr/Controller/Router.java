@@ -41,9 +41,4 @@ public class Router {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
-
-//    @PostMapping(path = "/campaign")
-//    public Collection<Campaign> listCampaigns(@RequestBody String str) {
-//    public Campaign landing(HttpServletRequest request, HttpServletResponse response) {
-//    }
 }
