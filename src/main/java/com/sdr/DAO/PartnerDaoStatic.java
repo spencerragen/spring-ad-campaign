@@ -12,7 +12,7 @@ import java.util.*;
 
 @Repository
 @Qualifier("static")
-public class PartnerDaoStatic implements PartnerDaoInterface {
+public class PartnerDaoStatic extends PartnerDaoAbstract implements PartnerDaoInterface {
     private static Map<String, Partner> partners;
 
     static {
@@ -66,23 +66,13 @@ public class PartnerDaoStatic implements PartnerDaoInterface {
 
     @Override
     public Campaign getActiveCampaign(String partnerId) throws NoSuchPartnerException, NoActiveCampaignException {
-        Partner p = this.getPartner(partnerId);
-
-        for (Campaign c : p.getCampaigns()) {
-            Calendar now = Calendar.getInstance();
-            Calendar campaignStart = c.getCreationDate();
-            Calendar campaignEnd = Calendar.getInstance();
-
-            campaignEnd.setTime(campaignStart.getTime());
-            campaignEnd.add(Calendar.SECOND, c.getDuration());
-
-            if (now.before(campaignEnd) && now.after(campaignStart)) {
-                return c;
-            }
+        try {
+            Partner p = this.getPartner(partnerId);
+            return this.traverseCampaignsForActive(p);
+        } catch (NoSuchPartnerException nspe) {
+            throw new NoActiveCampaignException(partnerId);
+        } catch (NoActiveCampaignException nace) {
+            throw nace;
         }
-
-        System.out.println(partnerId + ": no campaign");
-
-        throw new NoActiveCampaignException(partnerId);
     }
 }
